@@ -10,7 +10,7 @@ import org.scribe.utils.*;
 /**
  * Implementation of the Builder pattern, with a fluent interface that creates a
  * {@link OAuthService}
- * 
+ *
  * @author Pablo Fernandez
  *
  */
@@ -21,9 +21,10 @@ public class ServiceBuilder
   private String callback;
   private Api api;
   private String scope;
+  private String state;
   private SignatureType signatureType;
   private OutputStream debugStream;
-  
+
   /**
    * Default constructor
    */
@@ -33,10 +34,10 @@ public class ServiceBuilder
     this.signatureType = SignatureType.Header;
     this.debugStream = null;
   }
-  
+
   /**
    * Configures the {@link Api}
-   * 
+   *
    * @param apiClass the class of one of the existent {@link Api}s on org.scribe.api package
    * @return the {@link ServiceBuilder} instance for method chaining
    */
@@ -52,7 +53,7 @@ public class ServiceBuilder
     Api api;
     try
     {
-      api = apiClass.newInstance();  
+      api = apiClass.newInstance();
     }
     catch(Exception e)
     {
@@ -71,14 +72,14 @@ public class ServiceBuilder
    */
   public ServiceBuilder provider(Api api)
   {
-	  Preconditions.checkNotNull(api, "Api cannot be null");
-	  this.api = api;
-	  return this;
+          Preconditions.checkNotNull(api, "Api cannot be null");
+          this.api = api;
+          return this;
   }
 
   /**
    * Adds an OAuth callback url
-   * 
+   *
    * @param callback callback url. Must be a valid url or 'oob' for out of band OAuth
    * @return the {@link ServiceBuilder} instance for method chaining
    */
@@ -88,10 +89,10 @@ public class ServiceBuilder
     this.callback = callback;
     return this;
   }
-  
+
   /**
    * Configures the api key
-   * 
+   *
    * @param apiKey The api key for your application
    * @return the {@link ServiceBuilder} instance for method chaining
    */
@@ -101,10 +102,10 @@ public class ServiceBuilder
     this.apiKey = apiKey;
     return this;
   }
-  
+
   /**
    * Configures the api secret
-   * 
+   *
    * @param apiSecret The api secret for your application
    * @return the {@link ServiceBuilder} instance for method chaining
    */
@@ -114,10 +115,10 @@ public class ServiceBuilder
     this.apiSecret = apiSecret;
     return this;
   }
-  
+
   /**
    * Configures the OAuth scope. This is only necessary in some APIs (like Google's).
-   * 
+   *
    * @param scope The OAuth scope
    * @return the {@link ServiceBuilder} instance for method chaining
    */
@@ -127,6 +128,19 @@ public class ServiceBuilder
     this.scope = scope;
     return this;
   }
+
+    /**
+     * Configures the OAuth state
+     *
+     * @param state The OAuth state
+     * @return the {@link ServiceBuilder} instance for method chaining
+     */
+    public ServiceBuilder state(String state)
+        {
+            Preconditions.checkEmptyString(state, "Invalid OAuth state");
+            this.state = state;
+            return this;
+        }
 
   /**
    * Configures the signature type, choose between header, querystring, etc. Defaults to Header
@@ -153,10 +167,10 @@ public class ServiceBuilder
     this.debugStream(System.out);
     return this;
   }
-  
+
   /**
    * Returns the fully configured {@link OAuthService}
-   * 
+   *
    * @return fully configured {@link OAuthService}
    */
   public OAuthService build()
@@ -164,6 +178,6 @@ public class ServiceBuilder
     Preconditions.checkNotNull(api, "You must specify a valid api through the provider() method");
     Preconditions.checkEmptyString(apiKey, "You must provide an api key");
     Preconditions.checkEmptyString(apiSecret, "You must provide an api secret");
-    return api.createService(new OAuthConfig(apiKey, apiSecret, callback, signatureType, scope, debugStream));
+    return api.createService(new OAuthConfig(apiKey, apiSecret, callback, signatureType, scope, state, debugStream));
   }
 }

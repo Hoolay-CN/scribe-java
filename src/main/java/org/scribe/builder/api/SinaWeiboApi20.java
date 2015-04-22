@@ -3,6 +3,7 @@ package org.scribe.builder.api;
 import org.scribe.extractors.*;
 import org.scribe.model.*;
 import org.scribe.utils.*;
+import org.scribe.model.OAuthConstants.*;
 
 /**
  * SinaWeibo OAuth 2.0 api.
@@ -10,7 +11,6 @@ import org.scribe.utils.*;
 public class SinaWeiboApi20 extends DefaultApi20
 {
   private static final String AUTHORIZE_URL = "https://api.weibo.com/oauth2/authorize?client_id=%s&redirect_uri=%s&response_type=code";
-  private static final String SCOPED_AUTHORIZE_URL = AUTHORIZE_URL + "&scope=%s";
 
   @Override
   public Verb getAccessTokenVerb()
@@ -33,14 +33,15 @@ public class SinaWeiboApi20 extends DefaultApi20
   @Override
   public String getAuthorizationUrl(OAuthConfig config)
   {
-    // Append scope if present
-    if (config.hasScope())
-    {
-      return String.format(SCOPED_AUTHORIZE_URL, config.getApiKey(), OAuthEncoder.encode(config.getCallback()), OAuthEncoder.encode(config.getScope()));
+    Preconditions.checkValidUrl(config.getCallback(),
+                                "Must provide a valid url as callback. Weibo does not support OOB");
+
+    final StringBuilder sb = new StringBuilder(String.format(AUTHORIZE_URL, config.getApiKey(), OAuthEncoder.encode(config.getCallback())));
+    if (config.hasScope()) {
+        sb.append('&').append(OAuthConstants.SCOPE).append('=').append(OAuthEncoder.encode(config.getScope()));}
+    if (config.hasState()) {
+        sb.append('&').append(OAuthConstants.STATE).append('=').append(OAuthEncoder.encode(config.getState()));
     }
-    else
-    {
-      return String.format(AUTHORIZE_URL, config.getApiKey(), OAuthEncoder.encode(config.getCallback()));
-    }
+    return sb.toString();
   }
 }

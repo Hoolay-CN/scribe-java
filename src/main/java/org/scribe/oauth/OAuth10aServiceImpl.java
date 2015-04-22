@@ -72,6 +72,7 @@ public class OAuth10aServiceImpl implements OAuthService
     request.addOAuthParameter(OAuthConstants.SIGN_METHOD, api.getSignatureService().getSignatureMethod());
     request.addOAuthParameter(OAuthConstants.VERSION, getVersion());
     if(config.hasScope()) request.addOAuthParameter(OAuthConstants.SCOPE, config.getScope());
+    if(config.hasState()) request.addOAuthParameter(OAuthConstants.STATE, config.getState());
     request.addOAuthParameter(OAuthConstants.SIGNATURE, getSignature(request, token));
 
     config.log("appended additional OAuth parameters: " + MapUtils.toString(request.getOauthParameters()));
@@ -100,11 +101,11 @@ public class OAuth10aServiceImpl implements OAuthService
     config.log("setting token to: " + requestToken + " and verifier to: " + verifier);
     addOAuthParams(request, requestToken);
     appendSignature(request);
-    
+
     config.log("sending request...");
     Response response = request.send(tuner);
     String body = response.getBody();
-    
+
     config.log("response status code: " + response.getCode());
     config.log("response body: " + body);
     return api.getAccessTokenExtractor().extract(body);

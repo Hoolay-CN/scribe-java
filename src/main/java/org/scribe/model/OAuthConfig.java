@@ -4,7 +4,7 @@ import java.io.*;
 
 /**
  * Parameter object that groups OAuth config values
- * 
+ *
  * @author Pablo Fernandez
  */
 public class OAuthConfig
@@ -14,20 +14,22 @@ public class OAuthConfig
   private final String callback;
   private final SignatureType signatureType;
   private final String scope;
+  private final String state;
   private final OutputStream debugStream;
-  
+
   public OAuthConfig(String key, String secret)
   {
-    this(key, secret, null, null, null, null);
+    this(key, secret, null, null, null, null, null);
   }
 
-  public OAuthConfig(String key, String secret, String callback, SignatureType type, String scope, OutputStream stream)
+  public OAuthConfig(String key, String secret, String callback, SignatureType type, String scope, String state, OutputStream stream)
   {
     this.apiKey = key;
     this.apiSecret = secret;
     this.callback = callback;
     this.signatureType = type;
     this.scope = scope;
+    this.state = state;
     this.debugStream = stream;
   }
 
@@ -56,9 +58,19 @@ public class OAuthConfig
     return scope;
   }
 
+  public String getState()
+  {
+    return state;
+  }
+
   public boolean hasScope()
   {
     return scope != null;
+  }
+
+  public boolean hasState()
+  {
+    return state != null;
   }
 
   public void log(String message)

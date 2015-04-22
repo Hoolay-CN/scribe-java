@@ -1,13 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.scribe</groupId>
+  <groupId>com.tiensonqin</groupId>
   <artifactId>scribe</artifactId>
   <packaging>jar</packaging>
-  <version>1.3.7</version>
+  <version>0.1.0-SNAPSHOT</version>
   <name>Scribe OAuth Library</name>
   <description>The best OAuth library out there</description>
-  <url>http://github.com/fernandezpablo85/scribe-java</url>
+  <url>http://github.com/hoolay-cn/scribe-java</url>
 
   <parent>
     <groupId>org.sonatype.oss</groupId>

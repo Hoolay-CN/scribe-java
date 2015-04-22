@@ -1,4 +1,4 @@
-/* 
+/*
 Copyright 2010 Pablo Fernandez
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,7 @@ package org.scribe.model;
 
 /**
  * This class contains OAuth constants, used project-wide
- * 
+ *
  * @author Pablo Fernandez
  */
 public class OAuthConstants
@@ -41,6 +41,7 @@ public class OAuthConstants
   public static final String HEADER = "Authorization";
   public static final Token EMPTY_TOKEN = new Token("", "");
   public static final String SCOPE = "scope";
+  public static final String STATE = "state";
 
   //OAuth 2.0
   public static final String ACCESS_TOKEN = "access_token";
@@ -48,5 +49,5 @@ public class OAuthConstants
   public static final String CLIENT_SECRET = "client_secret";
   public static final String REDIRECT_URI = "redirect_uri";
   public static final String CODE = "code";
-  
+
 }
